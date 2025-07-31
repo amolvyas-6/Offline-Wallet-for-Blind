@@ -13,7 +13,7 @@ The project aims to increase financial independence among the visually impaired 
 5. Leave everything else as default.
 6. Wait for setup to complete.
 7. Run `idf.py menuconfig` in the IDF terminal and enable auto start Arduino setup and loop options under Arduno configuration.
-8. In the generated `sdkconfig` file, Search for the key - `COMFIG_FREERTOS_HZ` - and change its value from `100` to `1000`.
+8. In the generated `sdkconfig` file, Search for the key - `CONFIG_FREERTOS_HZ` - and change its value from `100` to `1000`.
 9. While building, select flashing mode as `UART` and select device as `esp32s3`.
 
 # Components Used:
