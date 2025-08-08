@@ -16,3 +16,4 @@ dependencies:
   #   public: true
   espressif/arduino-esp32: '*'
   garag/esp-idf-pn532: '*'
+  espressif/esp-cryptoauthlib: '*'

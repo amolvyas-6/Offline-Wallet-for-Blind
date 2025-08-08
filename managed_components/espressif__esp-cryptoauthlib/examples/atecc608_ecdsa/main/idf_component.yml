@@ -1,0 +1,5 @@
+dependencies:
+  espressif/esp-cryptoauthlib:
+    version: '*'
+description: CryptoAuth element (ATECC608A) interfacing example
+version: 1.0.0
