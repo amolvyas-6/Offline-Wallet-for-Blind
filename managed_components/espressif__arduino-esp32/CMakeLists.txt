@@ -6,7 +6,7 @@
 #   idf.py build
 
 set(min_supported_idf_version "5.3.0")
-set(max_supported_idf_version "5.4.99")
+set(max_supported_idf_version "5.5.99")
 set(idf_version "${IDF_VERSION_MAJOR}.${IDF_VERSION_MINOR}.${IDF_VERSION_PATCH}")
 
 if ("${idf_version}" AND NOT "$ENV{ARDUINO_SKIP_IDF_VERSION_CHECK}")
@@ -118,51 +118,11 @@ set(ARDUINO_ALL_LIBRARIES
   WiFiProv
   Wire
   Zigbee
-  AdafruitPN532
-  AdafruitBusIO
-  PN532
-  NDEF
-  TinyGPSPlus
-  Cipher
-  ThingSpeak
   )
 
-set(ARDUINO_LIBRARY_ThingSpeak_SRCS libraries/ThingSpeak/src/ThingSpeak.cpp)
-set(ARDUINO_LIBRARY_TinyGPSPlus_SRCS libraries/TinyGPSPlus/src/TinyGPS++.cpp)
-set(ARDUINO_LIBRARY_Cipher_SRCS libraries/Cipher/src/Cipher.cpp)
 
-
-set(ARDUINO_LIBRARY_NDEF_SRCS 
-  libraries/NDEF/src/MifareClassic.cpp
-  libraries/NDEF/src/MifareUltralight.cpp
-  libraries/NDEF/src/Ndef.cpp
-  libraries/NDEF/src/NdefMessage.cpp
-  libraries/NDEF/src/NdefRecord.cpp
-  libraries/NDEF/src/NfcAdapter.cpp
-  libraries/NDEF/src/NfcTag.cpp
-)
-
-set(ARDUINO_LIBRARY_PN532_SRCS
-  libraries/PN532/src/emulatetag.cpp
-  libraries/PN532/src/llcp.cpp
-  libraries/PN532/src/mac_link.cpp
-  libraries/PN532/src/PN532_I2C.cpp
-  libraries/PN532/src/PN532_SPI.cpp
-  libraries/PN532/src/PN532.cpp
-  libraries/PN532/src/snep.cpp
-)
 
 set(ARDUINO_LIBRARY_ArduinoOTA_SRCS libraries/ArduinoOTA/src/ArduinoOTA.cpp)
-
-set(ARDUINO_LIBRARY_AdafruitPN532_SRCS 
-  libraries/AdafruitPN532/src/Adafruit_PN532.cpp)
-
-set(ARDUINO_LIBRARY_AdafruitBusIO_SRCS
-  libraries/AdafruitBusIO/src/Adafruit_BusIO_Register.cpp
-  libraries/AdafruitBusIO/src/Adafruit_GenericDevice.cpp
-  libraries/AdafruitBusIO/src/Adafruit_I2CDevice.cpp
-  libraries/AdafruitBusIO/src/Adafruit_SPIDevice.cpp
-)
 
 set(ARDUINO_LIBRARY_AsyncUDP_SRCS libraries/AsyncUDP/src/AsyncUDP.cpp)
 
@@ -207,6 +167,7 @@ set(ARDUINO_LIBRARY_LittleFS_SRCS libraries/LittleFS/src/LittleFS.cpp)
 set(ARDUINO_LIBRARY_NetBIOS_SRCS libraries/NetBIOS/src/NetBIOS.cpp)
 
 set(ARDUINO_LIBRARY_OpenThread_SRCS
+  libraries/OpenThread/src/OThread.cpp
   libraries/OpenThread/src/OThreadCLI.cpp
   libraries/OpenThread/src/OThreadCLI_Util.cpp)
 
@@ -225,7 +186,8 @@ set(ARDUINO_LIBRARY_Matter_SRCS
   libraries/Matter/src/MatterEndpoints/MatterOccupancySensor.cpp
   libraries/Matter/src/MatterEndpoints/MatterOnOffPlugin.cpp
   libraries/Matter/src/MatterEndpoints/MatterThermostat.cpp
-  libraries/Matter/src/Matter.cpp)
+  libraries/Matter/src/Matter.cpp
+  libraries/Matter/src/MatterEndPoint.cpp)
 
 set(ARDUINO_LIBRARY_PPP_SRCS
   libraries/PPP/src/PPP.cpp
@@ -342,6 +304,11 @@ set(ARDUINO_LIBRARY_Zigbee_SRCS
   libraries/Zigbee/src/ep/ZigbeeGateway.cpp
   libraries/Zigbee/src/ep/ZigbeeWindSpeedSensor.cpp
   libraries/Zigbee/src/ep/ZigbeeIlluminanceSensor.cpp
+  libraries/Zigbee/src/ep/ZigbeePM25Sensor.cpp
+  libraries/Zigbee/src/ep/ZigbeeElectricalMeasurement.cpp
+  libraries/Zigbee/src/ep/ZigbeeBinary.cpp
+  libraries/Zigbee/src/ep/ZigbeePowerOutlet.cpp
+  libraries/Zigbee/src/ep/ZigbeeFanControl.cpp
   )
 
 set(ARDUINO_LIBRARY_BLE_SRCS
@@ -397,13 +364,13 @@ endforeach()
 set(includedirs variants/${CONFIG_ARDUINO_VARIANT}/ cores/esp32/ ${ARDUINO_LIBRARIES_INCLUDEDIRS})
 set(srcs ${CORE_SRCS} ${ARDUINO_LIBRARIES_SRCS})
 set(priv_includes cores/esp32/libb64)
-set(requires spi_flash esp_partition mbedtls wpa_supplicant esp_adc esp_eth http_parser esp_ringbuf esp_driver_gptimer esp_driver_usb_serial_jtag driver)
+set(requires spi_flash esp_partition mbedtls wpa_supplicant esp_adc esp_eth http_parser esp_ringbuf esp_driver_gptimer esp_driver_usb_serial_jtag driver esp_http_client esp_https_ota)
 set(priv_requires fatfs nvs_flash app_update spiffs bootloader_support bt esp_hid usb esp_psram ${ARDUINO_LIBRARIES_REQUIRES})
 
 if(NOT CONFIG_ARDUINO_SELECTIVE_COMPILATION OR CONFIG_ARDUINO_SELECTIVE_OpenThread)
   #if(CONFIG_SOC_IEEE802154_SUPPORTED) # Does not work!
   #if(CONFIG_OPENTHREAD_ENABLED) # Does not work!
-  if(IDF_TARGET STREQUAL "esp32c6" OR IDF_TARGET STREQUAL "esp32h2") # Sadly only this works
+  if(IDF_TARGET STREQUAL "esp32c6" OR IDF_TARGET STREQUAL "esp32h2" OR IDF_TARGET STREQUAL "esp32c5") # Sadly only this works
     list(APPEND requires openthread)
   endif()
 endif()

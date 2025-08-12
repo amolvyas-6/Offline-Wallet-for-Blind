@@ -349,7 +349,7 @@ esp_err_t i2cSlaveInit(uint8_t num, int sda, int scl, uint16_t slaveID, uint32_t
 #endif
 #else
   i2c_ll_slave_init(i2c->dev);
-  i2c_ll_slave_set_fifo_mode(i2c->dev, true);
+  i2c_ll_enable_fifo_mode(i2c->dev, true);
 #endif
   i2c_ll_set_slave_addr(i2c->dev, slaveID, false);
   i2c_ll_set_tout(i2c->dev, I2C_LL_MAX_TIMEOUT);
@@ -374,7 +374,7 @@ esp_err_t i2cSlaveInit(uint8_t num, int sda, int scl, uint16_t slaveID, uint32_t
 #if ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 4, 2)
   i2c_ll_enable_fifo_mode(i2c->dev, true);
 #else
-  i2c_ll_slave_set_fifo_mode(i2c->dev, true);
+  i2c_ll_enable_fifo_mode(i2c->dev, true);
 #endif
 
   if (!i2c->intr_handle) {
